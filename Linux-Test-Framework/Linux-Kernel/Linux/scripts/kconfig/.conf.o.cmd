@@ -1,4 +1,4 @@
-cmd_scripts/kconfig/conf.o := gcc -Wp,-MD,scripts/kconfig/.conf.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89    -I/usr/include/ncursesw -DCURSES_LOC="<curses.h>"  -DNCURSES_WIDECHAR=1 -DLOCALE   -c -o scripts/kconfig/conf.o scripts/kconfig/conf.c
+cmd_scripts/kconfig/conf.o := gcc -Wp,-MD,scripts/kconfig/.conf.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89    -D_GNU_SOURCE   -DCURSES_LOC="<ncurses.h>" -DLOCALE   -c -o scripts/kconfig/conf.o scripts/kconfig/conf.c
 
 source_scripts/kconfig/conf.o := scripts/kconfig/conf.c
 
@@ -30,12 +30,13 @@ deps_scripts/kconfig/conf.o := \
   /usr/include/x86_64-linux-gnu/bits/local_lim.h \
   /usr/include/linux/limits.h \
   /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/stdio.h \
   /usr/include/libio.h \
   /usr/include/_G_config.h \
   /usr/include/wchar.h \
   /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
-  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
   /usr/include/x86_64-linux-gnu/bits/stdio.h \
   /usr/include/x86_64-linux-gnu/bits/stdio2.h \
@@ -59,6 +60,7 @@ deps_scripts/kconfig/conf.o := \
   /usr/include/x86_64-linux-gnu/bits/string.h \
   /usr/include/x86_64-linux-gnu/bits/string2.h \
   /usr/include/x86_64-linux-gnu/bits/string3.h \
+  /usr/include/x86_64-linux-gnu/bits/timex.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
   /usr/include/x86_64-linux-gnu/bits/environments.h \

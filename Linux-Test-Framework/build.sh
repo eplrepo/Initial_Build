@@ -20,12 +20,12 @@ cd Linux-Kernel/Linux
 #make clean
 #cp Rasperri-Pi2-config .config
 #make distclean
-make
+#make
 cp .config test_framework_config
 #Install Kernel Modules
 echo "Installing Kernel Modules........"
 rm -rf lib/modules
- make INSTALL_MOD_PATH=./ modules_install
+make INSTALL_MOD_PATH=./ modules_install
 cd ../../
 
 #Build LTP
@@ -50,15 +50,15 @@ make clean
 #the entire LTP again and build
 #make distclean
 make
-make install
+make install prefix=$PWD/ltp-testsuite
 cd ../../
 
 #Build Application
 
 #Build Filesystem
 echo "Set Up File System........"
-umount mntpt
-mount Filesystem/rootfs.ext4 mntpt/
+sudo umount mntpt
+sudo mount Filesystem/rootfs.ext4 mntpt/
 #Copy Kernel Modules
 echo "Copying Kernel Modules........"
 rm -rf mntpt/lib/modules
@@ -81,12 +81,13 @@ cp Build-Scripts/profile mntpt/etc/
 echo "Copying HOST Key........"
 rm -rf mntpt/root/.ssh
 cp -a Build-Scripts/.ssh mntpt/root/
+chmod 700 mntpt/root/.ssh/*
 
 #Copy LTP Binaries
 echo "Copying LTP test cases........"
-rm -rf mntpt/usr/lib/ltp-testsuite
-echo 
-cp -a /usr/lib/ltp-testsuite mntpt/usr/lib/
+rm -rf mntpt/usr/lib/ltp-testsuite 
+cp -a LTP-Source/ltp-testsuite-20180118/ltp-testsuite mntpt/usr/lib/
+cp -a test-cases/Test_Case_Set_1 mntpt/usr/lib/ltp-testsuite/runtest
 #cp -a /usr/lib/ltp-testsuite mntpt/usr/lib/
 
 
@@ -98,7 +99,10 @@ cp -a Build-Scripts/ChkForSwUpg.sh mntpt/root/swupg-scripts/
 cp -a Build-Scripts/NewBinaries.sh mntpt/root/swupg-scripts/
 cp -a Build-Scripts/SwUpg.sh mntpt/root/swupg-scripts/
 
-umount mntpt
+echo "Current Version..."
+cat mntpt/usr/version/release.txt
+
+sudo umount mntpt
 sync
 
 echo "Filesystem Set up complete!!!"
@@ -112,10 +116,10 @@ cp -a Linux-Kernel/Linux/arch/arm/boot/dts/bcm2709-rpi-2-b.dtb Binaries/boot/
 
 #copy zImage and its related binaries to Parition 1
 echo "Writing Boot Partition........"
-umount mntpt/
-mount /dev/sdb1 mntpt/
+sudo umount mntpt/
+sudo mount /dev/sdb1 mntpt/
 cp Binaries/boot/* mntpt/
-umount mntpt
+sudo umount mntpt
 sync
 
 #Write RFS to Partition 2
@@ -128,17 +132,16 @@ dd bs=4M if=Binaries/rfs/rootfs.ext4 of=/dev/sdb3 conv=fsync
 
 #Write bootinfo to partition 4
 echo "Writing BOOTINFO........"
-umount mntpt/
-mount /dev/sdb4 mntpt/
+sudo umount mntpt/
+sudo mount /dev/sdb4 mntpt/
 cp Binaries/bootinfo/* mntpt/
-umount mntpt
+sudo umount mntpt
 sync
 
 #echo "SDCARD READY!!!!!"
 
 #DElete binaries
-echo "Deleting Binaries Folder..."
+echo "Deleting Binaries Directory Contents..."
 rm -rf Binaries/rfs/*
 rm -rf Binaries/boot/zImage
 rm -rf Binaries/boot/bcm2709-rpi-2-b.dtb
-rm -rf /usr/lib/ltp-testsuite

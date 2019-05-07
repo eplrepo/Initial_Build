@@ -1,15 +1,15 @@
-echo "Copying files from Host to target"
-echo "zImage"
-sshpass -p "epl@123" scp epl@192.168.0.2:/home/epl/LTIB/LTP_Source/home/epl/LTPbuildroot/pi2/zImage /tmp/                 
-echo "bcm2709-rpi-2-b.dtb"
-sshpass -p "epl@123" scp epl@192.168.0.2:/home/epl/LTIB/LTP_Source/home/epl/LTPbuildroot/pi2/bcm2709-rpi-2-b.dtb /tmp/                 
-echo "rootfs.ext4"
-sshpass -p "epl@123" scp epl@192.168.0.2:/home/epl/LTIB/LTP_Source/home/epl/LTPbuildroot/pi2/rootfs.ext4 /tmp/                 
-
-echo "Check for New SW"
+echo "Downloading New Software from Host to target..."
+echo "Downloading Kernel Image...."
+sshpass -p "epl@123" scp epl@10.144.172.148:/home/epl/POC/Linux-Test-Automation-Framework/Jenkins-Mounted/pi2/zImage /tmp/                 
+echo "Downloading Device Tree...."
+sshpass -p "epl@123" scp epl@10.144.172.148:/home/epl/POC/Linux-Test-Automation-Framework/Jenkins-Mounted/pi2/bcm2709-rpi-2-b.dtb /tmp/        
+echo "Downloading Application..."
+sshpass -p "epl@123" scp epl@10.144.172.148:/home/epl/POC/Linux-Test-Automation-Framework/Jenkins-Mounted/pi2/rootfs.ext4 /tmp/                
+echo "Verify Checksum..."
 if [[ -f /tmp/zImage && -f /tmp/bcm2709-rpi-2-b.dtb && -f /tmp/rootfs.ext4 ]];then 
-		echo "All required files are present\n"
+		echo "Checksum Passed..."
 		./SwUpg.sh
 	else
-		echo "All required files are not present\n"
+		echo "Checksum Failed..."
 fi
+

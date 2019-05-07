@@ -19,12 +19,21 @@ for i in /etc/profile.d/*.sh ; do
 	unset i
 done
 
+cat /usr/version/release.txt
+
+sleep 3
+
 #On Every Power ON , check for Software Update
 cd /root/swupg-scripts
 ./ChkForSwUpg.sh
 
+sleep 3
+
+#Run LTP Test Suite
 cd /usr/lib/ltp-testsuite/
-./runltplite.sh 
+./runltp -q -p -l ltptest.log -f Test_Case_Set_1
+sshpass -p "epl@123" scp /usr/lib/ltp-testsuite/results/ltptest.log epl@10.144.172.148:/home/epl/pi2-shared/testlog/
+
 
 
 
